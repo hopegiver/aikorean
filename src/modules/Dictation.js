@@ -16,11 +16,6 @@ class Dictation {
     this.element = document.createElement('div');
     this.element.className = 'kla-module kla-dictation';
     this.element.innerHTML = `
-      <div class="kla-module-header">
-        <h3>듣고 쓰기</h3>
-        <p class="kla-module-subtitle">한국어 문장을 듣고 정확하게 받아쓰세요</p>
-      </div>
-
       <div class="kla-dictation-content">
         <div class="kla-audio-player">
           <button class="kla-btn kla-btn-primary kla-btn-large" id="playAudio">

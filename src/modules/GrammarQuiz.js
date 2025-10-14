@@ -68,11 +68,6 @@ class GrammarQuiz {
     this.element = document.createElement('div');
     this.element.className = 'kla-module kla-grammar-quiz';
     this.element.innerHTML = `
-      <div class="kla-module-header">
-        <h3>문법 퀴즈</h3>
-        <p class="kla-module-subtitle">한국어 문법 실력을 테스트해보세요</p>
-      </div>
-
       <div class="kla-quiz-content">
         <div class="kla-quiz-progress">
           <div class="kla-progress-bar">

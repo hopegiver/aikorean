@@ -42,11 +42,6 @@ class SentenceWriting {
     this.element = document.createElement('div');
     this.element.className = 'kla-module kla-sentence-writing';
     this.element.innerHTML = `
-      <div class="kla-module-header">
-        <h3>문장 쓰기</h3>
-        <p class="kla-module-subtitle">영어 문장을 한국어로 번역해보세요</p>
-      </div>
-
       <div class="kla-sentence-writing-content">
         <div class="kla-sentence-progress">
           <span id="sentenceNum">1</span> / ${this.sentences.length}

@@ -133,26 +133,62 @@ class KoreanLearningAssistant {
       } else {
         // 임베디드 모드
         this.container.innerHTML = '';
-        const backButton = this.createBackButton();
-        this.container.appendChild(backButton);
+        this.container.classList.add('has-module');
+
+        // 부모 demo 컨테이너에도 클래스 추가
+        const demoContainer = this.container.closest('#embedded-demo');
+        if (demoContainer) {
+          demoContainer.classList.add('has-module');
+        }
+
+        const moduleHeader = this.createModuleHeader(moduleName);
+        this.container.appendChild(moduleHeader);
         this.container.appendChild(module.render());
       }
     }
   }
 
-  createBackButton() {
-    const button = document.createElement('button');
-    button.className = 'kla-back-button';
-    button.innerHTML = '← 모듈 선택';
-    button.onclick = () => {
+  createModuleHeader(moduleName) {
+    const moduleTitles = {
+      'listen-repeat': '듣고 따라하기',
+      'dictation': '받아쓰기',
+      'word-match': '단어 짝 맞추기',
+      'reading': '읽기 연습',
+      'grammar-quiz': '문법 퀴즈',
+      'sentence-writing': '문장 쓰기'
+    };
+
+    const header = document.createElement('div');
+    header.className = 'kla-module-page-header';
+    header.innerHTML = `
+      <button class="kla-back-button">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <h2 class="kla-module-page-title">${moduleTitles[moduleName] || '학습'}</h2>
+      <div class="kla-header-spacer"></div>
+    `;
+
+    const backButton = header.querySelector('.kla-back-button');
+    backButton.onclick = () => {
       if (this.currentModule) {
         this.currentModule.destroy();
         this.currentModule = null;
       }
       this.container.innerHTML = '';
+      this.container.classList.remove('has-module');
+
+      // 부모 demo 컨테이너에서도 클래스 제거
+      const demoContainer = this.container.closest('#embedded-demo');
+      if (demoContainer) {
+        demoContainer.classList.remove('has-module');
+      }
+
       this.createEmbedded();
     };
-    return button;
+
+    return header;
   }
 
   destroy() {

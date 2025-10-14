@@ -20,11 +20,6 @@ class Reading {
     this.element = document.createElement('div');
     this.element.className = 'kla-module kla-reading';
     this.element.innerHTML = `
-      <div class="kla-module-header">
-        <h3>읽기</h3>
-        <p class="kla-module-subtitle">한국어 텍스트를 읽고 이해해보세요</p>
-      </div>
-
       <div class="kla-reading-content">
         <div class="kla-reading-controls">
           <button class="kla-btn kla-btn-primary" id="readButton">

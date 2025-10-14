@@ -21,11 +21,6 @@ class ListenRepeat {
     this.element = document.createElement('div');
     this.element.className = 'kla-module kla-listen-repeat';
     this.element.innerHTML = `
-      <div class="kla-module-header">
-        <h3>듣고 따라하기</h3>
-        <p class="kla-module-subtitle">원어민 발음을 듣고 따라 말해보세요</p>
-      </div>
-
       <div class="kla-listen-repeat-content">
         <div class="kla-sentence-display">
           <div class="kla-sentence-text">${this.currentSentence}</div>

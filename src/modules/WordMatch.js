@@ -47,20 +47,11 @@ class WordMatch {
     this.element = document.createElement('div');
     this.element.className = 'kla-module kla-word-match';
     this.element.innerHTML = `
-      <div class="kla-module-header">
-        <h3>단어 짝 맞추기</h3>
-        <p class="kla-module-subtitle">한국어 단어와 영어 의미를 연결하세요</p>
-      </div>
-
       <div class="kla-word-match-content">
-        <div class="kla-round-info">
-          <span class="kla-round-text">라운드 <span id="currentRound">1</span> / ${this.totalRounds}</span>
-        </div>
-
         <div class="kla-game-stats">
           <div class="kla-stat">
-            <span class="kla-stat-label">매칭:</span>
-            <span class="kla-stat-value" id="matchCount">0 / ${this.wordsPerRound}</span>
+            <span class="kla-stat-label">라운드:</span>
+            <span class="kla-stat-value"><span id="currentRoundStat">1</span> / ${this.totalRounds}</span>
           </div>
           <div class="kla-stat">
             <span class="kla-stat-label">시도:</span>
@@ -74,12 +65,10 @@ class WordMatch {
 
         <div class="kla-game-board-container">
           <div class="kla-game-column">
-            <div class="kla-column-header">🇰🇷 한국어</div>
             <div class="kla-game-board" id="koreanBoard"></div>
           </div>
 
           <div class="kla-game-column">
-            <div class="kla-column-header">🇺🇸 영어</div>
             <div class="kla-game-board" id="meaningBoard"></div>
           </div>
         </div>
@@ -161,9 +150,9 @@ class WordMatch {
     this.createCards();
     this.updateStats();
 
-    const currentRoundEl = this.element.querySelector('#currentRound');
-    if (currentRoundEl) {
-      currentRoundEl.textContent = this.currentRound;
+    const currentRoundStatEl = this.element.querySelector('#currentRoundStat');
+    if (currentRoundStatEl) {
+      currentRoundStatEl.textContent = this.currentRound;
     }
   }
 
@@ -300,10 +289,7 @@ class WordMatch {
   }
 
   updateStats() {
-    const matchCount = this.element.querySelector('#matchCount');
     const attemptCount = this.element.querySelector('#attemptCount');
-
-    matchCount.textContent = `${this.matchedPairs.length} / ${this.wordsPerRound}`;
     attemptCount.textContent = this.attempts;
   }
 

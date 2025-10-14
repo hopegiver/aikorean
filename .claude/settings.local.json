@@ -3,7 +3,8 @@
     "allow": [
       "Bash(mv:*)",
       "Bash(git push:*)",
-      "Bash(git restore:*)"
+      "Bash(git restore:*)",
+      "Bash(start index.html)"
     ],
     "deny": [],
     "ask": []
