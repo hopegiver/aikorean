@@ -8,21 +8,22 @@ class WordMatch {
       { korean: '감사합니다', meaning: 'Thank you' },
       { korean: '사랑', meaning: 'Love' },
       { korean: '친구', meaning: 'Friend' },
-      { korean: '학교', meaning: 'School' },
       // 라운드 2
+      { korean: '학교', meaning: 'School' },
       { korean: '음식', meaning: 'Food' },
       { korean: '가족', meaning: 'Family' },
       { korean: '시간', meaning: 'Time' },
+      // 라운드 3
       { korean: '물', meaning: 'Water' },
       { korean: '책', meaning: 'Book' },
-      // 라운드 3
       { korean: '집', meaning: 'House' },
       { korean: '나무', meaning: 'Tree' },
+      // 라운드 4
       { korean: '꽃', meaning: 'Flower' },
       { korean: '하늘', meaning: 'Sky' },
       { korean: '바다', meaning: 'Sea' },
-      // 라운드 4
       { korean: '산', meaning: 'Mountain' },
+      // 라운드 5
       { korean: '강', meaning: 'River' },
       { korean: '길', meaning: 'Road' },
       { korean: '문', meaning: 'Door' },
@@ -30,8 +31,8 @@ class WordMatch {
     ];
 
     this.currentRound = 1;
-    this.totalRounds = 4;
-    this.wordsPerRound = 5;
+    this.totalRounds = 5;
+    this.wordsPerRound = 4;
     this.currentWords = [];
     this.selectedCards = [];
     this.matchedPairs = [];
