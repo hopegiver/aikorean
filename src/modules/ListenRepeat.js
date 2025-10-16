@@ -31,7 +31,7 @@ class ListenRepeat {
         <div id="audioPlayerContainer"></div>
 
         <div class="kla-waveform" id="waveform">
-          <canvas id="waveformCanvas" width="600" height="100"></canvas>
+          <canvas id="waveformCanvas"></canvas>
         </div>
 
         <div class="kla-recording-section">
@@ -82,8 +82,19 @@ class ListenRepeat {
     const playerContainer = this.element.querySelector('#audioPlayerContainer');
     playerContainer.appendChild(this.audioPlayer.render());
 
+    // 캔버스 크기 설정
+    this.initCanvas();
+
     this.attachEventListeners();
     return this.element;
+  }
+
+  initCanvas() {
+    const canvas = this.element.querySelector('#waveformCanvas');
+    const container = this.element.querySelector('.kla-waveform');
+    const containerWidth = container.clientWidth - 32; // padding 제외
+    canvas.width = containerWidth;
+    canvas.height = 100;
   }
 
   attachEventListeners() {

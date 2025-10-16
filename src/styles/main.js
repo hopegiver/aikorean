@@ -341,7 +341,7 @@ const css = `/* ========================================
    Listen & Repeat Module
    ======================================== */
 .kla-listen-repeat-content {
-  max-width: 700px;
+  max-width: 100%;
   margin: 0 auto;
 }
 
@@ -409,6 +409,12 @@ const css = `/* ========================================
   padding: 16px;
   margin-bottom: 24px;
   text-align: center;
+  overflow: hidden;
+}
+
+.kla-waveform canvas {
+  max-width: 100%;
+  height: auto;
 }
 
 .kla-recording-section {
@@ -740,17 +746,23 @@ const css = `/* ========================================
   .kla-game-board-container {
     grid-template-columns: 1fr;
   }
+
+  .kla-game-board {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
 }
 
 .kla-word-card {
   background: var(--kla-bg);
   border: 2px solid var(--kla-border);
   border-radius: var(--kla-radius);
-  padding: 20px;
+  padding: 14px;
   text-align: center;
   cursor: pointer;
   transition: var(--kla-transition);
-  min-height: 100px;
+  min-height: 70px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1861,7 +1873,7 @@ const css = `/* ========================================
    ======================================== */
 @media (max-width: 768px) {
   .kla-module-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .kla-comparison {

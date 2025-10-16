@@ -66,8 +66,6 @@ class SentenceWriting {
             <div class="kla-english-text" id="englishText"></div>
           </div>
 
-          <div class="kla-arrow-down">↓</div>
-
           <div class="kla-sentence-korean">
             <div class="kla-label">🇰🇷 한국어로 번역</div>
             <textarea
