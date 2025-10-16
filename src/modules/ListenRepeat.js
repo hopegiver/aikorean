@@ -17,6 +17,8 @@ class ListenRepeat {
     this.analyser = null;
     this.mediaRecorder = null;
     this.audioChunks = [];
+    this.recordedAudioURL = null;
+    this.recordedAudio = null;
   }
 
   render() {
@@ -40,6 +42,12 @@ class ListenRepeat {
               <circle cx="12" cy="12" r="8" fill="currentColor"/>
             </svg>
             <span>녹음 시작</span>
+          </button>
+          <button class="kla-btn kla-btn-secondary" id="playRecordingButton" disabled>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M8 5V19L19 12L8 5Z" fill="currentColor"/>
+            </svg>
+            <span>내 녹음 듣기</span>
           </button>
           <div class="kla-recording-status" id="recordingStatus"></div>
         </div>
@@ -100,9 +108,11 @@ class ListenRepeat {
   attachEventListeners() {
     const recordButton = this.element.querySelector('#recordButton');
     const retryButton = this.element.querySelector('#retryButton');
+    const playRecordingButton = this.element.querySelector('#playRecordingButton');
 
     recordButton.addEventListener('click', () => this.toggleRecording());
     retryButton.addEventListener('click', () => this.reset());
+    playRecordingButton.addEventListener('click', () => this.playRecording());
   }
 
   async playSentence() {
@@ -122,6 +132,13 @@ class ListenRepeat {
   async replaySentence() {
     this.audioPlayer.setPlaying(true);
     await this.playSentence();
+  }
+
+  playRecording() {
+    if (this.recordedAudio) {
+      this.recordedAudio.currentTime = 0;
+      this.recordedAudio.play();
+    }
   }
 
   async toggleRecording() {
@@ -144,6 +161,18 @@ class ListenRepeat {
 
       this.mediaRecorder.onstop = () => {
         const audioBlob = new Blob(this.audioChunks, { type: 'audio/wav' });
+
+        // 녹음된 오디오 저장
+        if (this.recordedAudioURL) {
+          URL.revokeObjectURL(this.recordedAudioURL);
+        }
+        this.recordedAudioURL = URL.createObjectURL(audioBlob);
+        this.recordedAudio = new Audio(this.recordedAudioURL);
+
+        // 내 녹음 듣기 버튼 활성화
+        const playRecordingButton = this.element.querySelector('#playRecordingButton');
+        playRecordingButton.disabled = false;
+
         this.evaluatePronunciation(audioBlob);
         stream.getTracks().forEach(track => track.stop());
       };
@@ -320,12 +349,33 @@ class ListenRepeat {
     const canvas = this.element.querySelector('#waveformCanvas');
     const ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // 녹음 데이터 초기화
+    if (this.recordedAudioURL) {
+      URL.revokeObjectURL(this.recordedAudioURL);
+      this.recordedAudioURL = null;
+    }
+    this.recordedAudio = null;
+
+    // 내 녹음 듣기 버튼 비활성화
+    const playRecordingButton = this.element.querySelector('#playRecordingButton');
+    if (playRecordingButton) {
+      playRecordingButton.disabled = true;
+    }
   }
 
   destroy() {
     this.tts.stop();
     if (this.isRecording) {
       this.stopRecording();
+    }
+    if (this.recordedAudio) {
+      this.recordedAudio.pause();
+      this.recordedAudio = null;
+    }
+    if (this.recordedAudioURL) {
+      URL.revokeObjectURL(this.recordedAudioURL);
+      this.recordedAudioURL = null;
     }
     if (this.element) {
       this.element.remove();

@@ -418,8 +418,11 @@ const css = `/* ========================================
 }
 
 .kla-recording-section {
-  text-align: center;
+  display: flex;
+  gap: 12px;
+  justify-content: center;
   margin-bottom: 24px;
+  flex-wrap: wrap;
 }
 
 .kla-recording-status {
