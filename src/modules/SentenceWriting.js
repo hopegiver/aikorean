@@ -8,6 +8,7 @@ class SentenceWriting {
     this.currentSentenceIndex = 0;
     this.userAnswer = '';
     this.isChecked = false;
+    this.score = 0;
 
     this.sentences = [
       {
@@ -43,8 +44,20 @@ class SentenceWriting {
     this.element.className = 'kla-module kla-sentence-writing';
     this.element.innerHTML = `
       <div class="kla-sentence-writing-content">
-        <div class="kla-sentence-progress">
-          <span id="sentenceNum">1</span> / ${this.sentences.length}
+        <div class="kla-writing-header">
+          <div class="kla-writing-progress">
+            <div class="kla-progress-bar">
+              <div class="kla-progress-fill" id="progressFill" style="width: 0%"></div>
+            </div>
+            <div class="kla-writing-info">
+              <div class="kla-writing-text">
+                문제: <span id="sentenceNum">1</span> / ${this.sentences.length}
+              </div>
+              <div class="kla-writing-score">
+                점수: <span id="scoreDisplay">0</span> / ${this.sentences.length}
+              </div>
+            </div>
+          </div>
         </div>
 
         <div class="kla-sentence-card">
@@ -163,6 +176,7 @@ class SentenceWriting {
     const sentenceNum = this.element.querySelector('#sentenceNum');
     const hintsContainer = this.element.querySelector('#hintsContainer');
     const resultSection = this.element.querySelector('#resultSection');
+    const progressFill = this.element.querySelector('#progressFill');
 
     englishText.textContent = sentence.english;
     koreanInput.value = '';
@@ -170,6 +184,10 @@ class SentenceWriting {
     sentenceNum.textContent = this.currentSentenceIndex + 1;
     hintsContainer.style.display = 'none';
     resultSection.style.display = 'none';
+
+    // 진행 바 업데이트
+    const progress = ((this.currentSentenceIndex) / this.sentences.length) * 100;
+    progressFill.style.width = `${progress}%`;
 
     this.isChecked = false;
     this.userAnswer = '';
@@ -220,6 +238,8 @@ class SentenceWriting {
       resultIcon.textContent = '✅';
       resultTitle.textContent = '정답입니다!';
       feedbackText.textContent = '훌륭해요! 완벽한 번역입니다.';
+      this.score++;
+      this.updateScore();
     } else if (similarity > 0.5) {
       resultCard.className = 'kla-result-card kla-partial';
       resultIcon.textContent = '⚠️';
@@ -281,6 +301,11 @@ class SentenceWriting {
     return matrix[str2.length][str1.length];
   }
 
+  updateScore() {
+    const scoreDisplay = this.element.querySelector('#scoreDisplay');
+    scoreDisplay.textContent = this.score;
+  }
+
   tryAgain() {
     const koreanInput = this.element.querySelector('#koreanInput');
     const resultSection = this.element.querySelector('#resultSection');
@@ -306,12 +331,14 @@ class SentenceWriting {
 
   restart() {
     this.currentSentenceIndex = 0;
+    this.score = 0;
     const completionSection = this.element.querySelector('#completionSection');
     const sentenceCard = this.element.querySelector('.kla-sentence-card');
 
     completionSection.style.display = 'none';
     sentenceCard.style.display = 'block';
 
+    this.updateScore();
     this.loadSentence();
   }
 

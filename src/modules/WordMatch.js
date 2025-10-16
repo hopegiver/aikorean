@@ -54,10 +54,6 @@ class WordMatch {
             <span class="kla-stat-value"><span id="currentRoundStat">1</span> / ${this.totalRounds}</span>
           </div>
           <div class="kla-stat">
-            <span class="kla-stat-label">시도:</span>
-            <span class="kla-stat-value" id="attemptCount">0</span>
-          </div>
-          <div class="kla-stat">
             <span class="kla-stat-label">시간:</span>
             <span class="kla-stat-value" id="timeCount">00:00</span>
           </div>
@@ -65,11 +61,11 @@ class WordMatch {
 
         <div class="kla-game-board-container">
           <div class="kla-game-column">
-            <div class="kla-game-board" id="koreanBoard"></div>
+            <div class="kla-game-board" id="meaningBoard"></div>
           </div>
 
           <div class="kla-game-column">
-            <div class="kla-game-board" id="meaningBoard"></div>
+            <div class="kla-game-board" id="koreanBoard"></div>
           </div>
         </div>
 
@@ -91,10 +87,6 @@ class WordMatch {
           </div>
 
           <div class="kla-final-stats">
-            <div class="kla-final-stat">
-              <span class="kla-stat-number" id="finalAttempts">0</span>
-              <span class="kla-stat-text">번 시도</span>
-            </div>
             <div class="kla-final-stat">
               <span class="kla-stat-number" id="finalTime">00:00</span>
               <span class="kla-stat-text">소요 시간</span>
@@ -289,8 +281,7 @@ class WordMatch {
   }
 
   updateStats() {
-    const attemptCount = this.element.querySelector('#attemptCount');
-    attemptCount.textContent = this.attempts;
+    // 통계 업데이트 (필요시 확장 가능)
   }
 
   startTimer() {
@@ -326,14 +317,12 @@ class WordMatch {
 
       const resultSection = this.element.querySelector('#resultSection');
       const resultTitle = this.element.querySelector('#resultTitle');
-      const finalAttempts = this.element.querySelector('#finalAttempts');
       const finalTime = this.element.querySelector('#finalTime');
       const finalAccuracy = this.element.querySelector('#finalAccuracy');
       const nextRoundButton = this.element.querySelector('#nextRoundButton');
       const playAgainButton = this.element.querySelector('#playAgainButton');
 
       resultTitle.textContent = '모든 라운드 완료! 🎉';
-      finalAttempts.textContent = this.totalAttempts;
       finalTime.textContent = timeString;
       finalAccuracy.textContent = `${accuracy}%`;
       nextRoundButton.style.display = 'none';

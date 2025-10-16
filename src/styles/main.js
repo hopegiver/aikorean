@@ -1,4 +1,7 @@
-/* ========================================
+// Auto-generated from main.css
+// This file injects CSS styles into the document
+
+const css = `/* ========================================
    Korean Learning Assistant - Main Styles
    ======================================== */
 
@@ -180,17 +183,20 @@
 
 .kla-module-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  padding: 8px;
 }
 
 .kla-module-card {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 16px;
-  padding: 20px;
+  text-align: center;
+  gap: 8px;
+  padding: 16px 12px;
   background: var(--kla-bg);
-  border: 2px solid var(--kla-border);
+  border: 1px solid var(--kla-border);
   border-radius: var(--kla-radius);
   cursor: pointer;
   transition: var(--kla-transition);
@@ -200,33 +206,26 @@
   border-color: var(--kla-primary);
   box-shadow: var(--kla-shadow);
   transform: translateY(-2px);
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
 }
 
 .kla-module-icon {
-  font-size: 36px;
-  flex-shrink: 0;
-}
-
-.kla-module-info {
-  flex: 1;
+  font-size: 48px;
+  margin-bottom: 4px;
 }
 
 .kla-module-title {
-  font-size: 18px;
+  font-size: 15px;
   font-weight: 600;
   color: var(--kla-text);
   margin-bottom: 4px;
 }
 
 .kla-module-description {
-  font-size: 14px;
+  font-size: 11px;
   color: var(--kla-text-light);
   line-height: 1.4;
-}
-
-.kla-module-arrow {
-  font-size: 20px;
-  color: var(--kla-text-light);
+  padding: 0 4px;
 }
 
 /* ========================================
@@ -366,19 +365,38 @@
   align-items: center;
   justify-content: center;
   gap: 24px;
-  margin-bottom: 24px;
   flex-wrap: wrap;
 }
 
 .kla-speed-control {
   display: flex;
-  flex-direction: column;
+  align-items: center;
   gap: 8px;
 }
 
 .kla-speed-control label {
   font-size: 14px;
   color: var(--kla-text-light);
+}
+
+.kla-speed-select {
+  padding: 6px 12px;
+  border: 1px solid var(--kla-border);
+  border-radius: var(--kla-radius);
+  background: white;
+  font-size: 14px;
+  cursor: pointer;
+  transition: var(--kla-transition);
+}
+
+.kla-speed-select:hover {
+  border-color: var(--kla-primary);
+}
+
+.kla-speed-select:focus {
+  outline: none;
+  border-color: var(--kla-primary);
+  box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
 }
 
 .kla-speed-control input[type="range"] {
@@ -1334,8 +1352,15 @@
   margin: 0 auto;
 }
 
-.kla-quiz-progress {
+.kla-quiz-header {
+  background: var(--kla-bg-light);
+  padding: 20px;
+  border-radius: var(--kla-radius);
   margin-bottom: 24px;
+}
+
+.kla-quiz-progress {
+  margin: 0;
 }
 
 .kla-progress-bar {
@@ -1343,7 +1368,7 @@
   height: 8px;
   border-radius: 4px;
   overflow: hidden;
-  margin-bottom: 8px;
+  margin-bottom: 12px;
 }
 
 .kla-progress-fill {
@@ -1352,18 +1377,22 @@
   transition: width 0.3s ease;
 }
 
+.kla-progress-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .kla-progress-text {
-  text-align: center;
-  font-size: 14px;
-  color: var(--kla-text-light);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--kla-text);
 }
 
 .kla-quiz-score {
-  text-align: center;
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 600;
   color: var(--kla-primary);
-  margin-bottom: 24px;
 }
 
 .kla-question-container {
@@ -1504,12 +1533,47 @@
   margin: 0 auto;
 }
 
-.kla-sentence-progress {
-  text-align: center;
-  font-size: 16px;
-  color: var(--kla-text-light);
+.kla-writing-header {
+  background: var(--kla-bg-light);
+  padding: 20px;
+  border-radius: var(--kla-radius);
   margin-bottom: 24px;
+}
+
+.kla-writing-progress {
+  margin: 0;
+}
+
+.kla-writing-progress .kla-progress-bar {
+  background: var(--kla-border);
+  height: 8px;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+.kla-writing-progress .kla-progress-fill {
+  background: var(--kla-primary);
+  height: 100%;
+  transition: width 0.3s ease;
+}
+
+.kla-writing-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.kla-writing-text {
+  font-size: 16px;
   font-weight: 600;
+  color: var(--kla-text);
+}
+
+.kla-writing-score {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--kla-primary);
 }
 
 .kla-sentence-card {
@@ -1825,3 +1889,155 @@
     flex-direction: column;
   }
 }
+
+/* ========================================
+   Audio Player Component
+   ======================================== */
+.kla-audio-player {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 16px;
+  padding: 16px;
+  margin: 20px 0;
+  box-shadow: 0 8px 24px rgba(102, 126, 234, 0.25);
+}
+
+.kla-audio-controls {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  flex-wrap: nowrap;
+}
+
+.kla-audio-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 10px 8px;
+  border: none;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 70px;
+  width: 70px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  flex-shrink: 0;
+}
+
+.kla-audio-btn svg {
+  width: 22px;
+  height: 22px;
+}
+
+.kla-audio-btn-primary {
+  background: white;
+  color: #667eea;
+}
+
+.kla-audio-btn-primary:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.kla-audio-btn-secondary {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.kla-audio-btn-secondary:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+.kla-audio-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.kla-audio-btn-speed {
+  position: relative;
+  background: white;
+  color: #667eea;
+  height: 70px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.kla-audio-btn-speed:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.kla-speed-icon {
+  width: 22px;
+  height: 22px;
+}
+
+.kla-audio-speed-select {
+  position: absolute;
+  bottom: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 2px 6px;
+  border: none;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.95);
+  color: #667eea;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+  min-width: 55px;
+}
+
+.kla-audio-speed-select:hover {
+  background: white;
+  transform: translateX(-50%) scale(1.05);
+}
+
+.kla-audio-speed-select:focus {
+  outline: none;
+  background: white;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.8);
+}
+
+/* 모바일 최적화 */
+@media (max-width: 600px) {
+  .kla-audio-player {
+    padding: 20px;
+  }
+
+  .kla-audio-controls {
+    gap: 8px;
+  }
+
+  .kla-audio-btn {
+    min-width: 70px;
+    padding: 12px 14px;
+  }
+
+  .kla-audio-btn svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .kla-audio-btn span {
+    font-size: 12px;
+  }
+}
+`;
+
+// Inject styles into document head
+if (typeof document !== 'undefined') {
+  const style = document.createElement('style');
+  style.setAttribute('data-source', 'korean-learning-assistant');
+  style.textContent = css;
+  document.head.appendChild(style);
+}
+
+export default css;

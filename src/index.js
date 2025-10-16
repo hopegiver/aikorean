@@ -1,3 +1,4 @@
+import './styles/main.js';
 import FloatingButton from './ui/FloatingButton.js';
 import Modal from './ui/Modal.js';
 import ModuleSelector from './ui/ModuleSelector.js';
@@ -135,60 +136,58 @@ class KoreanLearningAssistant {
         this.container.innerHTML = '';
         this.container.classList.add('has-module');
 
-        // 부모 demo 컨테이너에도 클래스 추가
-        const demoContainer = this.container.closest('#embedded-demo');
-        if (demoContainer) {
-          demoContainer.classList.add('has-module');
-        }
+        // 헤더 업데이트
+        this.updateHeader(moduleName);
 
-        const moduleHeader = this.createModuleHeader(moduleName);
-        this.container.appendChild(moduleHeader);
         this.container.appendChild(module.render());
       }
     }
   }
 
-  createModuleHeader(moduleName) {
+  updateHeader(moduleName) {
     const moduleTitles = {
       'listen-repeat': '듣고 따라하기',
       'dictation': '받아쓰기',
-      'word-match': '단어 짝 맞추기',
+      'word-match': '단어 맞추기',
       'reading': '읽기 연습',
       'grammar-quiz': '문법 퀴즈',
       'sentence-writing': '문장 쓰기'
     };
 
-    const header = document.createElement('div');
-    header.className = 'kla-module-page-header';
-    header.innerHTML = `
-      <button class="kla-back-button">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-          <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </button>
-      <h2 class="kla-module-page-title">${moduleTitles[moduleName] || '학습'}</h2>
-      <div class="kla-header-spacer"></div>
-    `;
+    const titleElement = document.getElementById('ai-assistant-title');
+    const backButton = document.getElementById('ai-assistant-back');
 
-    const backButton = header.querySelector('.kla-back-button');
-    backButton.onclick = () => {
-      if (this.currentModule) {
-        this.currentModule.destroy();
-        this.currentModule = null;
-      }
-      this.container.innerHTML = '';
-      this.container.classList.remove('has-module');
+    if (titleElement) {
+      titleElement.textContent = moduleTitles[moduleName] || '학습';
+    }
 
-      // 부모 demo 컨테이너에서도 클래스 제거
-      const demoContainer = this.container.closest('#embedded-demo');
-      if (demoContainer) {
-        demoContainer.classList.remove('has-module');
-      }
+    if (backButton) {
+      backButton.style.display = 'flex';
+      backButton.onclick = () => this.goBack();
+    }
+  }
 
-      this.createEmbedded();
-    };
+  goBack() {
+    if (this.currentModule) {
+      this.currentModule.destroy();
+      this.currentModule = null;
+    }
+    this.container.innerHTML = '';
+    this.container.classList.remove('has-module');
 
-    return header;
+    // 헤더 원래대로 복원
+    const titleElement = document.getElementById('ai-assistant-title');
+    const backButton = document.getElementById('ai-assistant-back');
+
+    if (titleElement) {
+      titleElement.textContent = '🇰🇷 AI Assistant';
+    }
+
+    if (backButton) {
+      backButton.style.display = 'none';
+    }
+
+    this.createEmbedded();
   }
 
   destroy() {

@@ -7,32 +7,32 @@ class ModuleSelector {
     this.moduleInfo = {
       'listen-repeat': {
         title: '듣고 따라하기',
-        description: '원어민 발음을 듣고 따라 말하며 발음을 교정받으세요',
+        description: '원어민 발음을 듣고 따라하기',
         icon: '🎧'
       },
       'dictation': {
         title: '듣고 쓰기',
-        description: '한국어 문장을 듣고 정확하게 받아쓰기를 연습하세요',
+        description: '한국어 문장 받아쓰기',
         icon: '✍️'
       },
       'word-match': {
-        title: '단어 짝 맞추기',
-        description: '단어와 뜻을 연결하며 어휘력을 향상시키세요',
+        title: '단어 맞추기',
+        description: '단어와 뜻을 매칭하기',
         icon: '🎯'
       },
       'reading': {
         title: '읽기',
-        description: '한국어 텍스트를 읽고 이해력을 높이세요',
+        description: '한국어 텍스트 읽기',
         icon: '📖'
       },
       'grammar-quiz': {
         title: '문법 퀴즈',
-        description: '퀴즈를 풀며 한국어 문법을 마스터하세요',
+        description: '퀴즈로 문법 학습하기',
         icon: '📚'
       },
       'sentence-writing': {
         title: '문장 쓰기',
-        description: '영어 문장을 한국어로 번역하며 작문 실력을 키우세요',
+        description: '한국어 문장 작성하기',
         icon: '✏️'
       }
     };
@@ -49,11 +49,8 @@ class ModuleSelector {
       return `
         <div class="kla-module-card" data-module="${moduleName}">
           <div class="kla-module-icon">${info.icon}</div>
-          <div class="kla-module-info">
-            <h3 class="kla-module-title">${info.title}</h3>
-            <p class="kla-module-description">${info.description}</p>
-          </div>
-          <div class="kla-module-arrow">→</div>
+          <h3 class="kla-module-title">${info.title}</h3>
+          <p class="kla-module-description">${info.description}</p>
         </div>
       `;
     }).join('');

@@ -69,17 +69,20 @@ class GrammarQuiz {
     this.element.className = 'kla-module kla-grammar-quiz';
     this.element.innerHTML = `
       <div class="kla-quiz-content">
-        <div class="kla-quiz-progress">
-          <div class="kla-progress-bar">
-            <div class="kla-progress-fill" id="progressFill" style="width: 0%"></div>
+        <div class="kla-quiz-header">
+          <div class="kla-quiz-progress">
+            <div class="kla-progress-bar">
+              <div class="kla-progress-fill" id="progressFill" style="width: 0%"></div>
+            </div>
+            <div class="kla-progress-info">
+              <div class="kla-progress-text">
+                문제: <span id="currentQuestion">1</span> / <span id="totalQuestions">${this.totalQuestions}</span>
+              </div>
+              <div class="kla-quiz-score">
+                점수: <span id="scoreDisplay">0</span> / ${this.totalQuestions}
+              </div>
+            </div>
           </div>
-          <div class="kla-progress-text">
-            <span id="currentQuestion">1</span> / <span id="totalQuestions">${this.totalQuestions}</span>
-          </div>
-        </div>
-
-        <div class="kla-quiz-score">
-          점수: <span id="scoreDisplay">0</span> / ${this.totalQuestions}
         </div>
 
         <div class="kla-question-container" id="questionContainer">
@@ -218,10 +221,10 @@ class GrammarQuiz {
   showResults() {
     const questionContainer = this.element.querySelector('#questionContainer');
     const quizResult = this.element.querySelector('#quizResult');
-    const progressBar = this.element.querySelector('.kla-quiz-progress');
+    const quizHeader = this.element.querySelector('.kla-quiz-header');
 
     questionContainer.style.display = 'none';
-    progressBar.style.display = 'none';
+    quizHeader.style.display = 'none';
     quizResult.style.display = 'block';
 
     // 점수 애니메이션
@@ -278,10 +281,10 @@ class GrammarQuiz {
 
     const questionContainer = this.element.querySelector('#questionContainer');
     const quizResult = this.element.querySelector('#quizResult');
-    const progressBar = this.element.querySelector('.kla-quiz-progress');
+    const quizHeader = this.element.querySelector('.kla-quiz-header');
 
     questionContainer.style.display = 'block';
-    progressBar.style.display = 'block';
+    quizHeader.style.display = 'block';
     quizResult.style.display = 'none';
 
     this.updateScore();

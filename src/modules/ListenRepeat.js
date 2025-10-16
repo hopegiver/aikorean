@@ -1,6 +1,7 @@
 import AIService from '../services/AIService.js';
 import TextToSpeechService from '../services/TextToSpeech.js';
 import SpeechRecognitionService from '../services/SpeechRecognition.js';
+import AudioPlayer from '../ui/AudioPlayer.js';
 
 class ListenRepeat {
   constructor(options = {}) {
@@ -9,6 +10,7 @@ class ListenRepeat {
     this.tts = new TextToSpeechService(options);
     this.stt = null;
     this.element = null;
+    this.audioPlayer = null;
     this.isRecording = false;
     this.currentSentence = '안녕하세요. 저는 한국어를 배우고 있습니다.';
     this.audioContext = null;
@@ -26,19 +28,7 @@ class ListenRepeat {
           <div class="kla-sentence-text">${this.currentSentence}</div>
         </div>
 
-        <div class="kla-audio-controls">
-          <button class="kla-btn kla-btn-primary kla-btn-play" id="playButton">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-              <path d="M8 5V19L19 12L8 5Z" fill="currentColor"/>
-            </svg>
-            <span>듣기</span>
-          </button>
-
-          <div class="kla-speed-control">
-            <label>속도: <span id="speedValue">1.0</span>x</label>
-            <input type="range" id="speedSlider" min="0.5" max="1.5" step="0.1" value="1.0">
-          </div>
-        </div>
+        <div id="audioPlayerContainer"></div>
 
         <div class="kla-waveform" id="waveform">
           <canvas id="waveformCanvas" width="600" height="100"></canvas>
@@ -82,38 +72,45 @@ class ListenRepeat {
       </div>
     `;
 
+    // AudioPlayer 추가
+    this.audioPlayer = new AudioPlayer({
+      onPlay: () => this.playSentence(),
+      onStop: () => this.stopPlaying(),
+      onReplay: () => this.replaySentence(),
+      onSpeedChange: (speed) => this.tts.setRate(speed)
+    });
+    const playerContainer = this.element.querySelector('#audioPlayerContainer');
+    playerContainer.appendChild(this.audioPlayer.render());
+
     this.attachEventListeners();
     return this.element;
   }
 
   attachEventListeners() {
-    const playButton = this.element.querySelector('#playButton');
     const recordButton = this.element.querySelector('#recordButton');
-    const speedSlider = this.element.querySelector('#speedSlider');
-    const speedValue = this.element.querySelector('#speedValue');
     const retryButton = this.element.querySelector('#retryButton');
 
-    playButton.addEventListener('click', () => this.playSentence());
     recordButton.addEventListener('click', () => this.toggleRecording());
-    speedSlider.addEventListener('input', (e) => {
-      const speed = parseFloat(e.target.value);
-      speedValue.textContent = speed.toFixed(1);
-      this.tts.setRate(speed);
-    });
     retryButton.addEventListener('click', () => this.reset());
   }
 
   async playSentence() {
-    const playButton = this.element.querySelector('#playButton');
-    playButton.disabled = true;
-
     try {
       await this.tts.speak(this.currentSentence);
     } catch (error) {
       console.error('TTS error:', error);
     } finally {
-      playButton.disabled = false;
+      this.audioPlayer.setPlaying(false);
     }
+  }
+
+  stopPlaying() {
+    this.tts.stop();
+  }
+
+  async replaySentence() {
+    this.audioPlayer.setPlaying(true);
+    await this.playSentence();
   }
 
   async toggleRecording() {

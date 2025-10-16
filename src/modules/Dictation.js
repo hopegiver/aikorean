@@ -1,5 +1,6 @@
 import AIService from '../services/AIService.js';
 import TextToSpeechService from '../services/TextToSpeech.js';
+import AudioPlayer from '../ui/AudioPlayer.js';
 
 class Dictation {
   constructor(options = {}) {
@@ -7,6 +8,7 @@ class Dictation {
     this.aiService = new AIService(options);
     this.tts = new TextToSpeechService(options);
     this.element = null;
+    this.audioPlayer = null;
     this.correctText = '오늘은 날씨가 정말 좋습니다. 공원에 산책하러 가고 싶어요.';
     this.userText = '';
     this.showHints = false;
@@ -17,19 +19,7 @@ class Dictation {
     this.element.className = 'kla-module kla-dictation';
     this.element.innerHTML = `
       <div class="kla-dictation-content">
-        <div class="kla-audio-player">
-          <button class="kla-btn kla-btn-primary kla-btn-large" id="playAudio">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
-              <path d="M8 5V19L19 12L8 5Z" fill="currentColor"/>
-            </svg>
-            <span>문장 듣기</span>
-          </button>
-
-          <div class="kla-playback-controls">
-            <label>재생 속도: <span id="speedValue">1.0</span>x</label>
-            <input type="range" id="speedSlider" min="0.5" max="1.5" step="0.1" value="1.0">
-          </div>
-        </div>
+        <div id="audioPlayerContainer"></div>
 
         <div class="kla-dictation-input">
           <label for="userInput">받아쓰기:</label>
@@ -105,32 +95,31 @@ class Dictation {
       </div>
     `;
 
+    // AudioPlayer 추가
+    this.audioPlayer = new AudioPlayer({
+      onPlay: () => this.playAudio(),
+      onStop: () => this.stopPlaying(),
+      onReplay: () => this.replayAudio(),
+      onSpeedChange: (speed) => this.tts.setRate(speed)
+    });
+    const playerContainer = this.element.querySelector('#audioPlayerContainer');
+    playerContainer.appendChild(this.audioPlayer.render());
+
     this.attachEventListeners();
     return this.element;
   }
 
   attachEventListeners() {
-    const playAudio = this.element.querySelector('#playAudio');
     const userInput = this.element.querySelector('#userInput');
-    const speedSlider = this.element.querySelector('#speedSlider');
-    const speedValue = this.element.querySelector('#speedValue');
     const charCount = this.element.querySelector('#charCount');
     const toggleHints = this.element.querySelector('#toggleHints');
     const clearButton = this.element.querySelector('#clearButton');
     const submitButton = this.element.querySelector('#submitButton');
     const retryButton = this.element.querySelector('#retryButton');
 
-    playAudio.addEventListener('click', () => this.playAudio());
-
     userInput.addEventListener('input', (e) => {
       this.userText = e.target.value;
       charCount.textContent = `${this.userText.length}자`;
-    });
-
-    speedSlider.addEventListener('input', (e) => {
-      const speed = parseFloat(e.target.value);
-      speedValue.textContent = speed.toFixed(1);
-      this.tts.setRate(speed);
     });
 
     toggleHints.addEventListener('click', () => this.toggleHints());
@@ -140,16 +129,22 @@ class Dictation {
   }
 
   async playAudio() {
-    const playButton = this.element.querySelector('#playAudio');
-    playButton.disabled = true;
-
     try {
       await this.tts.speak(this.correctText);
     } catch (error) {
       console.error('TTS error:', error);
     } finally {
-      playButton.disabled = false;
+      this.audioPlayer.setPlaying(false);
     }
+  }
+
+  stopPlaying() {
+    this.tts.stop();
+  }
+
+  async replayAudio() {
+    this.audioPlayer.setPlaying(true);
+    await this.playAudio();
   }
 
   toggleHints() {

@@ -1,5 +1,6 @@
 import AIService from '../services/AIService.js';
 import TextToSpeechService from '../services/TextToSpeech.js';
+import AudioPlayer from '../ui/AudioPlayer.js';
 
 class Reading {
   constructor(options = {}) {
@@ -7,6 +8,7 @@ class Reading {
     this.aiService = new AIService(options);
     this.tts = new TextToSpeechService(options);
     this.element = null;
+    this.audioPlayer = null;
     this.readingText = `한국은 아름다운 나라입니다. 사계절이 뚜렷하고, 역사와 문화가 풍부합니다.
 
 서울은 한국의 수도이며, 전통과 현대가 조화를 이루는 도시입니다. 경복궁과 같은 역사적인 장소와 현대적인 고층 건물들이 함께 존재합니다.
@@ -21,26 +23,7 @@ class Reading {
     this.element.className = 'kla-module kla-reading';
     this.element.innerHTML = `
       <div class="kla-reading-content">
-        <div class="kla-reading-controls">
-          <button class="kla-btn kla-btn-primary" id="readButton">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-              <path d="M8 5V19L19 12L8 5Z" fill="currentColor"/>
-            </svg>
-            전체 읽기
-          </button>
-
-          <div class="kla-speed-control">
-            <label>읽기 속도: <span id="speedValue">1.0</span>x</label>
-            <input type="range" id="speedSlider" min="0.5" max="1.5" step="0.1" value="1.0">
-          </div>
-
-          <button class="kla-btn kla-btn-secondary" id="stopButton">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-              <rect x="6" y="6" width="12" height="12" fill="currentColor"/>
-            </svg>
-            정지
-          </button>
-        </div>
+        <div id="audioPlayerContainer"></div>
 
         <div class="kla-reading-text" id="readingText">
           ${this.formatTextForReading(this.readingText)}
@@ -119,6 +102,16 @@ class Reading {
       </div>
     `;
 
+    // AudioPlayer 추가
+    this.audioPlayer = new AudioPlayer({
+      onPlay: () => this.readText(),
+      onStop: () => this.stopReading(),
+      onReplay: () => this.replayText(),
+      onSpeedChange: (speed) => this.tts.setRate(speed)
+    });
+    const playerContainer = this.element.querySelector('#audioPlayerContainer');
+    playerContainer.appendChild(this.audioPlayer.render());
+
     this.attachEventListeners();
     return this.element;
   }
@@ -137,20 +130,7 @@ class Reading {
   }
 
   attachEventListeners() {
-    const readButton = this.element.querySelector('#readButton');
-    const stopButton = this.element.querySelector('#stopButton');
-    const speedSlider = this.element.querySelector('#speedSlider');
-    const speedValue = this.element.querySelector('#speedValue');
     const checkAnswersButton = this.element.querySelector('#checkAnswersButton');
-
-    readButton.addEventListener('click', () => this.readText());
-    stopButton.addEventListener('click', () => this.stopReading());
-
-    speedSlider.addEventListener('input', (e) => {
-      const speed = parseFloat(e.target.value);
-      speedValue.textContent = speed.toFixed(1);
-      this.tts.setRate(speed);
-    });
 
     // 탭 전환
     this.element.querySelectorAll('.kla-tab-button').forEach(button => {
@@ -181,20 +161,22 @@ class Reading {
   }
 
   async readText() {
-    const readButton = this.element.querySelector('#readButton');
-    readButton.disabled = true;
-
     try {
       await this.tts.speak(this.readingText);
     } catch (error) {
       console.error('TTS error:', error);
     } finally {
-      readButton.disabled = false;
+      this.audioPlayer.setPlaying(false);
     }
   }
 
   stopReading() {
     this.tts.stop();
+  }
+
+  async replayText() {
+    this.audioPlayer.setPlaying(true);
+    await this.readText();
   }
 
   switchTab(tabName) {
